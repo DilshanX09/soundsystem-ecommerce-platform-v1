@@ -10,6 +10,7 @@ import ServicesComponent from "../components/Services.component";
 import EventComponent from "../components/Events.component";
 import CustomerFeedbackCardComponent from "../components/CustomerFeedbackCard.component";
 import BrandsComponent from "../components/Brands.component";
+import NewsLattersComponent from "../components/NewsLatters.component";
 
 const HomeView = () => {
 
@@ -35,6 +36,7 @@ const HomeView = () => {
                <CustomerFeedbackCardComponent />
                <EventComponent />
                <BrandsComponent />
+               <NewsLattersComponent />
           </>
      );
 
