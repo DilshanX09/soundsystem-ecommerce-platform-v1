@@ -22,7 +22,7 @@ const MiniProductCardComponent = ({ setIsOpen, panelRef, query, setQuery, onSubm
                          <div className="p-2 md:p-5">
                               <IoClose className="text-xl mb-3 md:hidden" onClick={() => setIsOpen(false)} />
                               <form onSubmit={onSubmit} className="flex items-center w-full py-2 bg-[#FAFAFA] border border-[#f6f6f6] rounded-lg overflow-hidden">
-                                   <div className="relative">
+                                   <div className="relative hidden md:block">
                                         <select className="pl-4 pr-4 text-sm font-inter-regular bg-transparent text-neutral-700">
                                              <option>All Categories</option>
                                         </select>

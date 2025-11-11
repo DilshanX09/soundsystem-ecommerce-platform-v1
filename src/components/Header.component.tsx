@@ -54,7 +54,7 @@ const HeaderComponent = () => {
           return (
                <div className={`flex-1 lg:max-w-xl w-full`}>
                     <form onSubmit={onSubmit} className="flex items-center w-full py-1.5 bg-[#FAFAFA] border border-[#f6f6f6] rounded-lg overflow-hidden">
-                         <div className="relative">
+                         <div className="relative hidden md:block">
                               <select className="pl-4 outline-none pr-4 text-sm font-inter-regular bg-transparent text-neutral-700">
                                    <option>All Categories</option>
                                    <option>Headphones</option>
