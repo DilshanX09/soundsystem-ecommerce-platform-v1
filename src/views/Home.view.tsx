@@ -9,6 +9,7 @@ import ProductListComponent from "../components/ProductsList.component";
 import ServicesComponent from "../components/Services.component";
 import EventComponent from "../components/Events.component";
 import CustomerFeedbackCardComponent from "../components/CustomerFeedbackCard.component";
+import BrandsComponent from "../components/Brands.component";
 
 const HomeView = () => {
 
@@ -33,6 +34,7 @@ const HomeView = () => {
                <ServicesComponent />
                <CustomerFeedbackCardComponent />
                <EventComponent />
+               <BrandsComponent />
           </>
      );
 
