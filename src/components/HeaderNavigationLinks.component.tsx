@@ -3,6 +3,7 @@ import React from 'react';
 import type { Product } from '../types/Product.type';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import { HiOutlineBars3BottomRight } from 'react-icons/hi2';
+import { IoClose } from 'react-icons/io5';
 
 const HeaderNavigationLinksComponent = () => {
 
@@ -109,15 +110,6 @@ const HeaderNavigationLinksComponent = () => {
           return () => document.removeEventListener('mousedown', onDocClick);
      }, [openMenu]);
 
-     // // Close menus when the user scrolls the page
-     // React.useEffect(() => {
-     //      const onScroll = () => {
-     //           if (openMenu) setOpenMenu(null);
-     //      };
-     //      window.addEventListener('scroll', onScroll, { passive: true });
-     //      return () => window.removeEventListener('scroll', onScroll);
-     // }, [openMenu]);
-
      return (
           <>
                <div className="md:block border-t border-neutral-100 border-b dark:border-neutral-700">
@@ -159,8 +151,12 @@ const HeaderNavigationLinksComponent = () => {
                                              </button>
                                              <div
                                                   ref={menuRef}
-                                                  className={`fixed w-full border-b border-[#e4e4e4] bg-white lg:border-none lg:mx-0 left-0 mt-5 z-50 transition-all duration-200 ease-out ${openMenu === 'categories' ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}`}>
-                                                  <div className="md:grid lg:grid-cols-5 md:gap-6 md:p-6 md:bg-white">
+                                                  className={`fixed w-full h-screen top-0 border-b border-[#e4e4e4] bg-white lg:border-none lg:mx-0 left-0 z-50 transition-all duration-200 ease-out ${openMenu === 'categories' ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}`}>
+                                                  <div className="md:grid cursor-pointer mt-10 lg:grid-cols-5 md:gap-6 md:p-6 md:bg-white">
+
+                                                       <IoClose className='text-2xl absolute right-5 top-5'
+                                                            onClick={(e) => { if (isDraggingRef.current) { e.preventDefault(); return; } e.preventDefault(); setOpenMenu(openMenu === 'categories' ? null : 'categories'); }}
+                                                       />
 
                                                        <div className='mt-4 md:mt-0 ml-4 md:ml-0'>
                                                             <h4 className="text-lg font-inter-bold mb-6 uppercase">Shop by category</h4>
@@ -207,9 +203,13 @@ const HeaderNavigationLinksComponent = () => {
                                              <a ref={productsButtonRef} href="#" onClick={(e) => { if (isDraggingRef.current) { e.preventDefault(); return; } e.preventDefault(); setOpenMenu(openMenu === 'products' ? null : 'products'); }} className="inline-flex items-center cursor-pointer">
                                                   PRODUCTS
                                              </a>
-                                             <div onMouseLeave={() => setOpenMenu(null)} ref={productsMenuRef} className={`fixed m-0 left-0 mt-5 w-full border-b border-[#e4e4e4] bg-white p-6 z-50 transition-all duration-200 ease-out ${openMenu === 'products' ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}`}>
-                                                  <h4 className="text-xl uppercase font-inter-bold mb-6">Latest products</h4>
+                                             <div ref={productsMenuRef} className={`fixed cursor-pointer m-0 left-0 top-0 w-full border-b border-[#e4e4e4] h-screen bg-white p-6 z-50 transition-all duration-200 ease-out ${openMenu === 'products' ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}`}>
 
+                                                  <IoClose className='text-2xl absolute right-5 top-5'
+                                                       onClick={(e) => { if (isDraggingRef.current) { e.preventDefault(); return; } e.preventDefault(); setOpenMenu(openMenu === 'products' ? null : 'products'); }}
+                                                  />
+
+                                                  <h4 className="text-xl uppercase font-inter-bold mb-6">Latest products</h4>
 
                                                   <div className='flex items-center gap-16 overflow-x-auto' onMouseLeave={() => { }}>
 
