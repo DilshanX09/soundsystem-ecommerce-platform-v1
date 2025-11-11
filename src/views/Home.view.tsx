@@ -11,6 +11,7 @@ import EventComponent from "../components/Events.component";
 import CustomerFeedbackCardComponent from "../components/CustomerFeedbackCard.component";
 import BrandsComponent from "../components/Brands.component";
 import NewsLattersComponent from "../components/NewsLatters.component";
+import FooterComponent from "../components/Footer.component";
 
 const HomeView = () => {
 
@@ -37,6 +38,7 @@ const HomeView = () => {
                <EventComponent />
                <BrandsComponent />
                <NewsLattersComponent />
+               <FooterComponent />
           </div>
      );
 
