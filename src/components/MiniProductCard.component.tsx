@@ -1,6 +1,7 @@
 import { FiSearch } from "react-icons/fi";
 import type { FormEvent } from "react";
 import type { Product } from "../types/Product.type";
+import { IoClose } from "react-icons/io5";
 
 
 type MiniProductCardProps = {
@@ -15,10 +16,11 @@ type MiniProductCardProps = {
 const MiniProductCardComponent = ({ setIsOpen, panelRef, query, setQuery, onSubmit, filtered }: MiniProductCardProps) => {
      return (
           <>
-               <div className="fixed inset-0 z-50 flex items-start justify-center pt-14" aria-modal="true" role="dialog">
+               <div className="fixed inset-0 z-50 flex items-start justify-center md:pt-14" aria-modal="true" role="dialog">
                     <div className="absolute inset-0 bg-black/20 backdrop-blur-[5px]" onClick={() => setIsOpen(false)}></div>
-                    <div ref={panelRef} onClick={(e) => e.stopPropagation()} className="relative w-full max-w-2xl mx-4 bg-white rounded-xl">
-                         <div className="p-5">
+                    <div ref={panelRef} onClick={(e) => e.stopPropagation()} className="relative max-w-2xl w-full h-full md:h-auto md:mx-4 bg-white md:rounded-xl">
+                         <div className="p-2 md:p-5">
+                              <IoClose className="text-xl mb-3 md:hidden" onClick={() => setIsOpen(false)} />
                               <form onSubmit={onSubmit} className="flex items-center w-full py-2 bg-[#FAFAFA] border border-[#f6f6f6] rounded-lg overflow-hidden">
                                    <div className="relative">
                                         <select className="pl-4 pr-4 text-sm font-inter-regular bg-transparent text-neutral-700">
@@ -26,7 +28,7 @@ const MiniProductCardComponent = ({ setIsOpen, panelRef, query, setQuery, onSubm
                                         </select>
                                    </div>
                                    <div className="w-px h-6 bg-neutral-300 mx-3"></div>
-                                   <input value={query} onChange={(e) => setQuery(e.target.value)} className="flex-grow font-inter-regular pr-2 py-2.5 text-sm bg-transparent border-none outline-none text-neutral-900 placeholder-neutral-500" placeholder="Search product here..." type="search" />
+                                   <input value={query} onChange={(e) => setQuery(e.target.value)} className="flex-grow font-inter-regular pr-1 py-2.5 text-sm bg-transparent border-none outline-none text-neutral-900 placeholder-neutral-500" placeholder="Search product here..." type="search" />
                                    <button className="p-2.5 text-neutral-500 hover:text-primary transition-colors" type="submit">
                                         <FiSearch className='text-xl mr-2' />
                                    </button>
