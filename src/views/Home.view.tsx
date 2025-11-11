@@ -7,6 +7,7 @@ import CategoriesComponent from "../components/Categories.component";
 import SpecialDealsCarouselComponent from "../components/SpecialDealsCarousel.component";
 import ProductListComponent from "../components/ProductsList.component";
 import ServicesComponent from "../components/Services.component";
+import EventComponent from "../components/Events.component";
 
 const HomeView = () => {
 
@@ -29,6 +30,7 @@ const HomeView = () => {
                <SpecialDealsCarouselComponent />
                <ProductListComponent title="Latest Products" />
                <ServicesComponent />
+               <EventComponent />
           </>
      );
 
