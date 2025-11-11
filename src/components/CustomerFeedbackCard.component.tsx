@@ -33,7 +33,7 @@ const CustomerFeedbackCardComponent = () => {
 
      return (
           <div className="w-full py-10 font-inter-regular container mx-auto mt-5">
-               <h1 className="text-lg font-inter-medium uppercase">What Our Clients Say</h1>
+               <h1 className="text-lg font-inter-medium uppercase pl-3 md:pl-3">What Our Clients Say</h1>
                <Slider {...settings} className="my-5 w-full mx-0">
                     <div className="px-2">
                          <div className="border border-[#e4e4e4] px-6 py-5 rounded-xl h-full">
