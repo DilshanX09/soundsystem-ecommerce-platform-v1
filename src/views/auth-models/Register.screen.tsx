@@ -2,6 +2,10 @@ import { useState } from "react";
 import AuthSideBgImage from '../../assets/images/Auth-Side-Image.png';
 import Logo from '../../assets/images/Dark-Logo.jpg';
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from "zod";
+import { Controller, useForm } from "react-hook-form";
+import { IoMdInformationCircleOutline } from "react-icons/io";
 
 const RegisterScreen = ({ changeView }: { changeView: (view: 'login' | 'register') => void }) => {
 
@@ -11,14 +15,64 @@ const RegisterScreen = ({ changeView }: { changeView: (view: 'login' | 'register
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [togglePasswordVisible, setTogglePasswordVisible] = useState<boolean>(false);
-    const [agreeToTerms, setAgreeToTerms] = useState(false);
 
-    const handleRegister = () => {
-        alert(`Register with:\nFirst Name: ${firstName}\nLast Name: ${lastName}\nEmail: ${email}\nPassword: ${password}\nAgree to terms: ${agreeToTerms}`);
+    // Define validate schema 
+    const schema = z.object({
+        firstName: z
+            .string()
+            .min(2, 'First name must be at least 2 characters long')
+            .max(50, 'First name must be at most 50 characters long')
+            .regex(/^[A-Za-z]+$/, 'First name must contain only letters'),
+        lastName: z
+            .string()
+            .min(2, 'Last name must be at least 2 characters long')
+            .max(50, 'Last name must be at most 50 characters long')
+            .regex(/^[A-Za-z]+$/, 'Last name must contain only letters'),
+        email: z
+            .string()
+            .min(1, 'Email is required')
+            .email('Invalid email address'),
+        password: z
+            .string()
+            .min(8, 'Password must be at least 8 characters long')
+            .max(16, 'Password must be at most 16 characters long')
+            .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+            .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+            .regex(/[0-9]/, 'Password must contain at least one number')
+            .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character'),
+        confirmPassword: z.string(),
+        agreeToTerms: z.boolean().refine((val) => val === true, {
+            message: 'You must accept the terms and conditions',
+        }),
+    }).refine((data) => data.password === data.confirmPassword, {
+        message: 'Passwords do not match',
+        path: ['confirmPassword'],
+    });
+
+    const { register, handleSubmit, control, formState: { errors } } = useForm({
+        resolver: zodResolver(schema),
+        mode: 'onTouched',
+        defaultValues: {
+            agreeToTerms: false
+        }
+    });
+
+    const handleRegister = async (data: z.infer<typeof schema>) => {
+        console.log('register data', data);
+        console.log('api calling......');
+    };
+
+    const handleFormSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        handleSubmit(
+            (data) => {
+                handleRegister(data);
+            }
+        )(e);
     };
 
     return (
-        <div className="flex flex-col items-center justify-center md:flex-row h-screen bg-white">
+        <div className="flex flex-col items-center justify-center md:flex-row h-screen bg-white" >
 
             <div className="relative hidden md:block md:w-[30%] w-full h-screen md:h-full bg-black">
                 <img
@@ -34,7 +88,7 @@ const RegisterScreen = ({ changeView }: { changeView: (view: 'login' | 'register
             </div>
 
             <div className="w-full md:w-[70%] h-full flex items-center justify-center p-6 md:p-12">
-                <div className="w-full max-w-md">
+                <div className="w-full max-w-md" onSubmit={handleFormSubmit}>
 
                     <div className="mb-4">
                         <img src={Logo} className="h-16 rounded-md" />
@@ -44,21 +98,32 @@ const RegisterScreen = ({ changeView }: { changeView: (view: 'login' | 'register
                         Create your new account
                     </h2>
 
-                    <p className="text-gray-500 mb-8 font-inter-regular text-base md:text-md">
+                    <p className="text-gray-500 mb-5 font-inter-regular text-base md:text-md">
                         Create your account now. Unlock member benefits, track your orders, and discover premium audio equipment tailored for you.
                     </p>
 
-                    <div className="space-y-5 mb-6">
+                    <div className="flex flex-col">
+                        {errors.firstName && <p className="text-red-500 text-[13px] font-inter-regular inline-flex items-center gap-1"><IoMdInformationCircleOutline />{errors.firstName.message}</p>}
+                        {errors.lastName && <p className="text-red-500 text-[13px] font-inter-regular inline-flex items-center gap-1"><IoMdInformationCircleOutline />{errors.lastName.message}</p>}
+                        {errors.email && <p className="text-red-500 text-[13px] font-inter-regular inline-flex items-center gap-1"><IoMdInformationCircleOutline /> {errors.email.message}</p>}
+                        {errors.password && <p className="text-red-500 text-[13px] font-inter-regular inline-flex items-center gap-1"><IoMdInformationCircleOutline />{errors.password.message}</p>}
+                        {errors.confirmPassword && <p className="text-red-500 text-[13px] font-inter-regular inline-flex items-center gap-1"><IoMdInformationCircleOutline />{errors.confirmPassword.message}</p>}
+                        {errors.agreeToTerms && <p className="text-red-500 text-[13px] font-inter-regular inline-flex items-center gap-1"><IoMdInformationCircleOutline />{errors.agreeToTerms.message}</p>}
+                    </div>
+
+                    <div className="space-y-5 mb-6 pt-5">
                         <div className="flex space-x-4">
                             <input
-                                type="email"
+                                {...register('firstName')}
+                                type="text"
                                 value={firstName}
                                 onChange={(e) => setFirstName(e.target.value)}
-                                placeholder="First mame"
+                                placeholder="First name"
                                 className="w-1/2 py-3  border-b border-[#e4e4e4] placeholder:text-gray-500 outline-none font-inter-regular"
                             />
                             <input
-                                type="email"
+                                {...register('lastName')}
+                                type="text"
                                 value={lastName}
                                 onChange={(e) => setLastName(e.target.value)}
                                 placeholder="Last mame"
@@ -66,15 +131,17 @@ const RegisterScreen = ({ changeView }: { changeView: (view: 'login' | 'register
                             />
                         </div>
                         <input
+                            {...register('email')}
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="Email address"
-                            className="w-full py-3  border-b border-[#e4e4e4] placeholder:text-gray-500 outline-none font-inter-regular"
+                            className="w-full py-3 border-b border-[#e4e4e4] placeholder:text-gray-500 outline-none font-inter-regular"
                         />
                         <div className="flex space-x-4">
                             <div className="relative">
                                 <input
+                                    {...register('password')}
                                     type={togglePasswordVisible ? "text" : "password"}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
@@ -89,6 +156,7 @@ const RegisterScreen = ({ changeView }: { changeView: (view: 'login' | 'register
                             </div>
                             <div className="relative">
                                 <input
+                                    {...register('confirmPassword')}
                                     type={togglePasswordVisible ? "text" : "password"}
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -102,38 +170,46 @@ const RegisterScreen = ({ changeView }: { changeView: (view: 'login' | 'register
                                 )}
                             </div>
                         </div>
+
                     </div>
 
-                    <div className="flex items-center justify-between mb-6 text-sm md:text-base">
-                        <p className="mr-3 text-gray-500 font-inter-regular">
-                            By creating an account, I agree to the <a href="#" className="underline text-black">Terms of Service</a> and <a href="#" className="underline text-black">Privacy Policy</a>
-                        </p>
-                        <div
-                            className={`w-16 h-7 flex items-center rounded-full p-1 cursor-pointer transition-colors ${agreeToTerms ? 'bg-[#181818]' : 'bg-gray-300'}`}
-                            onClick={() => setAgreeToTerms(!agreeToTerms)}
-                        >
-                            <div
-                                className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform ${agreeToTerms ? 'translate-x-5' : ''}`}
-                            />
-                        </div>
+                    <div className="flex items-center justify-between gap-4 mb-6">
+                        <span className="font-inter-regular text-gray-500">By creating an account, I agree to the
+                            <span className="text-black underline"> Terms of Service</span> and <span className="text-black">Privacy Policy</span>
+                        </span>
+                        <Controller
+                            name="agreeToTerms"
+                            control={control}
+                            render={({ field }) => (
+                                <div
+                                    className={`w-16 h-7 flex items-center rounded-full p-1 cursor-pointer transition-colors ${field.value ? 'bg-[#181818]' : 'bg-gray-300'
+                                        }`}
+                                    onClick={() => field.onChange(!field.value)}
+                                >
+                                    <div
+                                        className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform ${field.value ? 'translate-x-5' : ''}`}
+                                    />
+                                </div>
+                            )}
+                        />
                     </div>
 
                     <button
-                        onClick={handleRegister}
+                        onClick={handleFormSubmit}
                         className="w-full bg-[#181818] text-white font-inter-medium text-[15px] text-lg py-4 rounded-[7px] hover:bg-[#2a2a2a] transition-colors mb-6"
                     >
                         CREATE NEW ACCOUNT
                     </button>
 
-                    <p className="flex items-center gap-2 text-base font-inter-regular">
+                    <div className="flex items-center gap-2 text-base font-inter-regular">
                         <span className="text-[#6a6a6a]">Already have an account? </span>
                         <p onClick={() => changeView('login')} className="text-black font-medium underline cursor-pointer">
                             Log in
                         </p>
-                    </p>
+                    </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 

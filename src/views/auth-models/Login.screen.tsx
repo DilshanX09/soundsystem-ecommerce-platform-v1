@@ -98,12 +98,12 @@ const LoginScreen = ({ changeView }: { changeView(view: 'login' | 'register'): v
                               LOG IN
                          </button>
 
-                         <p className="text-base flex items-center gap-2 font-inter-regular">
+                         <div className="text-base flex items-center gap-2 font-inter-regular">
                               <span className="text-[#6a6a6a]">Don't have an account? </span>
                               <p onClick={() => changeView('register')} className="text-black font-medium underline cursor-pointer">
                                    Create new account
                               </p>
-                         </p>
+                         </div>
                     </div>
                </div>
           </div>
