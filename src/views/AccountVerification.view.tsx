@@ -1,11 +1,19 @@
 import OTPInput from 'react-otp-input';
 import Logo from '../assets/images/Dark-Logo.jpg';
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
+
+interface LocationState {
+     email: string;
+}
 
 const AccountVerificationView = () => {
 
      const [code, setCode] = useState("");
      const handleChange = (code: string) => setCode(code);
+
+     const location = useLocation();
+     const { email } = (location.state as LocationState) || {};
 
      return (
           <div className="flex items-center justify-center pt-28">
@@ -21,6 +29,10 @@ const AccountVerificationView = () => {
 
                     <p className="text-gray-500 mb-8 font-inter-regular text-base md:text-md">
                          Please verify your account to unlock member benefits, track your orders, and discover premium audio equipment tailored for you.
+                    </p>
+
+                    <p className="text-gray-500 mb-8 font-inter-regular text-base md:text-md">
+                         We've sent a verification code to: <span className='font-inter-medium text-black underline'>{email}</span>
                     </p>
 
                     <OTPInput
