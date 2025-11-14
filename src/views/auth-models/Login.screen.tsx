@@ -41,7 +41,7 @@ const LoginScreen = ({ changeView }: { changeView(view: 'login' | 'register'): v
                     } else {
                          setServerResponse(response.data.message);
                          setIsError(true);
-                         if (!response.data.isVerified) {
+                         if (response.data.isVerified != null && !response.data.isVerified) {
                               navigator('/users/account-verification', { state: { email: data.email } });
                               return;
                          }
