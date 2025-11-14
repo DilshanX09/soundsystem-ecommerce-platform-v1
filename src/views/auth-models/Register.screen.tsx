@@ -14,10 +14,12 @@ import { userRegisterSchema } from "../../validation/schema";
 import Logo from '../../assets/images/Dark-Logo.jpg';
 import AuthSideBgImage from '../../assets/images/Auth-Side-Image.png';
 import apiService from "../../services/apiService";
+import LoadingView from "../Loading.view";
 
 const RegisterScreen = ({ changeView }: { changeView: (view: 'login' | 'register') => void }) => {
 
     const navigator = useNavigate();
+
 
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -27,6 +29,8 @@ const RegisterScreen = ({ changeView }: { changeView: (view: 'login' | 'register
     const [togglePasswordVisible, setTogglePasswordVisible] = useState<boolean>(false);
     const [serverResponse, setServerResponse] = useState<string>("");
     const [isError, setIsError] = useState<boolean>(false);
+
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const { register, handleSubmit, control, formState: { errors } } = useForm({
         resolver: zodResolver(userRegisterSchema),
@@ -38,6 +42,8 @@ const RegisterScreen = ({ changeView }: { changeView: (view: 'login' | 'register
 
     const handleRegister = async (data: z.infer<typeof userRegisterSchema>) => {
 
+        setIsLoading(true);
+
         await apiService.post('/users/register', {
             firstName: data.firstName,
             lastName: data.lastName,
@@ -46,16 +52,19 @@ const RegisterScreen = ({ changeView }: { changeView: (view: 'login' | 'register
         })
             .then(response => {
                 if (response.data.status) {
+                    setIsLoading(false);
                     setServerResponse(response.data.message);
                     setIsError(false);
                     if (response.data.vcode) navigator('/users/account-verification', { state: { email: data.email } });
                     return;
                 } else {
+                    setIsLoading(false);
                     setServerResponse(response.data.message);
                     setIsError(true);
                     return;
                 }
             }).catch(() => {
+                setIsLoading(false);
                 setIsError(true);
                 setServerResponse("An error occurred while processing your request. Please try again later.");
             });
@@ -68,6 +77,8 @@ const RegisterScreen = ({ changeView }: { changeView: (view: 'login' | 'register
 
     return (
         <div className="flex flex-col items-center justify-center md:flex-row h-screen bg-white" >
+
+            {isLoading && <LoadingView />}
 
             <div className="relative hidden md:block md:w-[30%] w-full h-screen md:h-full bg-black">
                 <img

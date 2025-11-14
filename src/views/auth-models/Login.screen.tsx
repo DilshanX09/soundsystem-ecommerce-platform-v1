@@ -12,6 +12,7 @@ import Logo from '../../assets/images/Dark-Logo.jpg';
 import apiService from "../../services/apiService";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
+import LoadingView from "../Loading.view";
 
 const LoginScreen = ({ changeView }: { changeView(view: 'login' | 'register'): void }) => {
 
@@ -24,9 +25,13 @@ const LoginScreen = ({ changeView }: { changeView(view: 'login' | 'register'): v
      const [serverResponse, setServerResponse] = useState<string>("");
      const [isError, setIsError] = useState<boolean>(false);
 
+     const [isLoading, setIsLoading] = useState<boolean>(false);
+
      const { setUser } = useUser();
 
      const handleLogin = async (data: z.infer<typeof userLoginSchema>): Promise<void> => {
+
+          setIsLoading(true);
 
           await apiService.post('/users/login', {
                email: data.email,
@@ -35,13 +40,15 @@ const LoginScreen = ({ changeView }: { changeView(view: 'login' | 'register'): v
           })
                .then(response => {
                     if (response.data.status) {
+                         setIsLoading(false);
                          setServerResponse(response.data.message);
                          setUser(JSON.parse(response.data.user));
                          setIsError(false);
                     } else {
+                         setIsLoading(false);
                          setServerResponse(response.data.message);
                          setIsError(true);
-                         if (!response.data.isVerified) {
+                         if (response.data.isVerified != null && !response.data.isVerified) {
                               navigator('/users/account-verification', { state: { email: data.email } });
                               return;
                          }
@@ -49,6 +56,7 @@ const LoginScreen = ({ changeView }: { changeView(view: 'login' | 'register'): v
                     }
                })
                .catch(() => {
+                    setIsLoading(false);
                     setIsError(true);
                     setServerResponse("An error occurred while processing your request. Please try again later.");
                });
@@ -65,6 +73,8 @@ const LoginScreen = ({ changeView }: { changeView(view: 'login' | 'register'): v
 
      return (
           <div className="flex flex-col items-center justify-center md:flex-row h-screen bg-white">
+
+               {isLoading && <LoadingView />}
 
                <div className="relative hidden md:block md:w-[30%] w-full h-screen md:h-full bg-black">
                     <img
