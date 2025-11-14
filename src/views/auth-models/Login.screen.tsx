@@ -43,7 +43,9 @@ const LoginScreen = ({ changeView }: { changeView(view: 'login' | 'register'): v
                          setIsLoading(false);
                          setServerResponse(response.data.message);
                          setUser(JSON.parse(response.data.user));
+                         navigator('/');
                          setIsError(false);
+                         return;
                     } else {
                          setIsLoading(false);
                          setServerResponse(response.data.message);
@@ -59,6 +61,7 @@ const LoginScreen = ({ changeView }: { changeView(view: 'login' | 'register'): v
                     setIsLoading(false);
                     setIsError(true);
                     setServerResponse("An error occurred while processing your request. Please try again later.");
+                    return;
                });
      };
 
@@ -118,7 +121,7 @@ const LoginScreen = ({ changeView }: { changeView(view: 'login' | 'register'): v
                                    value={email}
                                    onChange={(e) => setEmail(e.target.value)}
                                    placeholder="Email address"
-                                   className={`w-full py-3 ${errors.email ? 'border-red-500 placeholder:text-red-500' : 'border-[#e4e4e4] placeholder:text-gray-500'} border-b   outline-none font-inter-regular`}
+                                   className={`w-full py-3 border-b border-[#e4e4e4] placeholder:text-gray-500  outline-none font-inter-regular`}
                               />
 
                               <div className="relative">
@@ -128,7 +131,7 @@ const LoginScreen = ({ changeView }: { changeView(view: 'login' | 'register'): v
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         placeholder="Password"
-                                        className={`w-full py-3 ${errors.password ? 'border-red-500 placeholder:text-red-500' : 'border-[#e4e4e4] placeholder:text-gray-500'} border-b   outline-none font-inter-regular`}
+                                        className={`w-full py-3 border-b border-[#e4e4e4] placeholder:text-gray-500 outline-none font-inter-regular`}
                                    />
                                    {togglePasswordVisible ? (
                                         <VscEye className="absolute right-2 top-4 text-xl cursor-pointer" onClick={() => setTogglePasswordVisible(!togglePasswordVisible)} />
