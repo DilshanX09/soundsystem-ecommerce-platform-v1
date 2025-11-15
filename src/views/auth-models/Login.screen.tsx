@@ -42,7 +42,8 @@ const LoginScreen = ({ changeView }: { changeView(view: 'login' | 'register'): v
                     if (response.data.status) {
                          setIsLoading(false);
                          setServerResponse(response.data.message);
-                         setUser(JSON.parse(response.data.user));
+                         if (staySignedIn) setUser(JSON.parse(response.data.user), true);
+                         else setUser(JSON.parse(response.data.user));
                          navigator('/');
                          setIsError(false);
                          return;

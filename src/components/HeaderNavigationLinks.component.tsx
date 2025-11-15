@@ -4,9 +4,11 @@ import type { Product } from '../types/Product.type';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import { HiOutlineBars3BottomRight } from 'react-icons/hi2';
 import { IoClose } from 'react-icons/io5';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const HeaderNavigationLinksComponent = () => {
 
+     const navigate = useNavigate();
      const navScrollRef = React.useRef<HTMLDivElement | null>(null);
      const isDown = React.useRef<boolean>(false);
      const startX = React.useRef<number>(0);
@@ -141,9 +143,9 @@ const HeaderNavigationLinksComponent = () => {
 
                                    </button>
                                    <div className="w-px h-5 bg-neutral-300 dark:bg-neutral-600"></div>
-                                   <nav className="flex items-center space-x-8 relative">
+                                   <nav className="flex items-center cursor-pointer space-x-8 relative">
 
-                                        <a href="#">HOME</a>
+                                        <p onClick={() => navigate('/')}>HOME</p>
                                         <a href="#">SHOP</a>
                                         <div className="relative">
                                              <button ref={menuButtonRef} onClick={(e) => { if (isDraggingRef.current) { e.preventDefault(); return; } e.preventDefault(); setOpenMenu(openMenu === 'categories' ? null : 'categories'); }} className="inline-flex items-center cursor-pointer">

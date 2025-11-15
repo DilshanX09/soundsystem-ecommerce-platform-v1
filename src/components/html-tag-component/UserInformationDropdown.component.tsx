@@ -5,9 +5,13 @@ import { MdOutlinePrivacyTip } from 'react-icons/md';
 import { PiSignOut } from 'react-icons/pi';
 import { RiUser4Line } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../../context/UserContext';
+
+import User from '../../assets/images/user.svg';
 
 const UserInformationDropdownComponent = () => {
 
+     const { user, setUser } = useUser();
      const navigate = useNavigate();
 
      return (
@@ -16,14 +20,8 @@ const UserInformationDropdownComponent = () => {
 
                     <MenuButton className="flex w-full outline-none items-center cursor-pointer">
 
-                         <div className='font-inter-regular p-2 flex items-center gap-2'>
-
-                              <img src='https://randomuser.me/api/portraits/men/1.jpg' className='w-11 h-11 rounded-full' />
-                              <div style={{ lineHeight: '17px' }}>
-                                   <h4 className='text-start text-[14px]'>Chamod Dilshan</h4>
-                                   <p className='text-[12px] text-gray-500'>chamoddilshan@gmail.com</p>
-                              </div>
-
+                         <div className='font-inter-regular'>
+                              <img src={User} className='w-10 h-10 rounded-full' />
                          </div>
 
                     </MenuButton>
@@ -35,10 +33,10 @@ const UserInformationDropdownComponent = () => {
                          <div className="py-1">
                               <MenuItem>
                                    <div className='bg-gray-100 mb-2 rounded-lg font-inter-regular p-2 flex items-center gap-2'>
-                                        <img src='https://randomuser.me/api/portraits/men/2.jpg' className='w-11 h-11 rounded-full' />
+                                        <img src={User} className='w-10 h-10 rounded-full' />
                                         <div style={{ lineHeight: '17px' }}>
-                                             <h4>Chamod Dilshan</h4>
-                                             <p className='text-sm text-gray-500'>chamoddilshan@gmail.com</p>
+                                             <h4>{user?.firstName} {user?.lastName}</h4>
+                                             <p className='text-sm text-gray-500'>{user?.email}</p>
                                         </div>
                                    </div>
                               </MenuItem>
@@ -93,12 +91,15 @@ const UserInformationDropdownComponent = () => {
                          </div>
                          <div className="pt-2">
                               <MenuItem>
-                                   <a
-                                        href="#"
-                                        className="px-4 py-2 text-[14px] rounded-lg text-red-500 data-focus:bg-red-100 data-focus:text-red-500 data-focus:outline-hidden flex items-center gap-2"
+                                   <p
+                                        onClick={() => {
+                                             setUser(null);
+                                             window.location.reload();
+                                        }}
+                                        className="px-4 py-2 text-[14px] cursor-pointer rounded-lg text-red-500 data-focus:bg-red-100 data-focus:text-red-500 data-focus:outline-hidden flex items-center gap-2"
                                    >
                                         <PiSignOut />  <p>Sign out</p>
-                                   </a>
+                                   </p>
                               </MenuItem>
                          </div>
                     </MenuItems>

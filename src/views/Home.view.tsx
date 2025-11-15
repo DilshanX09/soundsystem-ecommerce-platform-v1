@@ -20,7 +20,7 @@ const HomeView = () => {
      setTimeout(() => {
           setIsLoading(false);
           return () => clearTimeout(0);
-     }, 2000);
+     }, 500);
 
      if (isLoading) return <LoadingView />;
 
