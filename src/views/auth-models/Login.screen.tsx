@@ -18,8 +18,8 @@ const LoginScreen = ({ changeView }: { changeView(view: 'login' | 'register'): v
 
      const navigator = useNavigate();
 
-     const [email, setEmail] = useState<string>("");
-     const [password, setPassword] = useState<string>("");
+     const [email, setEmail] = useState<string>("chamoddilshan@gmail.com");
+     const [password, setPassword] = useState<string>("Dilshan@123");
      const [staySignedIn, setStaySignedIn] = useState<boolean>(false);
      const [togglePasswordVisible, setTogglePasswordVisible] = useState<boolean>(false);
      const [serverResponse, setServerResponse] = useState<string>("");
